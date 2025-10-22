@@ -24,9 +24,29 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #000;
-            color: #fff;
-            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        .color-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.5s ease;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,47 +54,63 @@
             padding: 20px;
         }
 
-        .container {
+        .ui-card {
+            background: white;
+            color: #000;
+            padding: 2.5rem 3rem;
+            border-radius: 0;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
             max-width: 600px;
             width: 100%;
             text-align: center;
+            border: 3px solid #000;
         }
 
         h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+
+            /* White fill with black stroke - ccff00.com style */
+            color: white;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 2px black;
+            paint-order: stroke fill;
+            filter: drop-shadow(3px 3px 0 black);
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            color: #aaa;
-            margin-bottom: 3rem;
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
             line-height: 1.5;
         }
 
-        .color-display {
-            width: 100%;
-            height: 300px;
-            margin: 2rem 0;
-            border-radius: 12px;
-            transition: background-color 0.5s ease;
-            box-shadow: 0 20px 60px rgba(204, 255, 0, 0.3);
+        .question {
+            font-size: 1.4rem;
+            margin: 1rem 0 0.5rem;
+            font-weight: 600;
+            color: #000;
         }
 
-        .question {
-            font-size: 1.5rem;
-            margin: 2rem 0 1.5rem;
-            font-weight: 500;
+        .subheader {
+            font-size: 1rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            text-transform: lowercase;
         }
 
         .color-code {
-            font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
-            color: #CCFF00;
-            margin: 1rem 0 2rem;
-            letter-spacing: 0.05em;
+            display: none;
+        }
+
+        .progress {
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
         }
 
         .button-group {
@@ -82,57 +118,113 @@
             gap: 1rem;
             justify-content: center;
             margin: 2rem 0;
+            flex-wrap: wrap;
         }
 
         button {
-            padding: 1rem 3rem;
-            font-size: 1.2rem;
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
             font-weight: 600;
-            border: 2px solid #CCFF00;
-            background: transparent;
-            color: #CCFF00;
+            border: 2px solid #000;
+            background: white;
+            color: #000;
             cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            min-width: 120px;
+            border-radius: 0;
+            transition: all 0.1s ease;
+            min-width: 140px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
+            position: relative;
         }
 
         button:hover {
-            background: #CCFF00;
-            color: #000;
-            transform: translateY(-2px);
+            background: #000;
+            border-color: #000;
+            color: #fff;
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+            transform: translate(3px, 3px);
         }
 
         button:active {
-            transform: translateY(0);
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+            transform: translate(3px, 3px);
         }
 
-        .progress {
+        button.reset-btn {
+            border-color: #999;
             color: #666;
-            font-size: 0.9rem;
-            margin-top: 2rem;
+        }
+
+        button.reset-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #000;
+        }
+
+        button.about-btn {
+            border-color: #999;
+            color: #666;
+        }
+
+        button.about-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+            color: #000;
         }
 
         /* Results Page */
         .results {
             display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
         }
 
         .results.active {
-            display: block;
+            display: flex;
+        }
+
+        .results-card {
+            background: white;
+            color: #000;
+            padding: 2.5rem 3rem;
+            border-radius: 0;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+            border: 3px solid #000;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .results-header {
+            font-size: 1.5rem;
+            margin: 0.5rem 0 1.5rem;
+            font-weight: 700;
+            color: #000;
         }
 
         .verdict {
             font-size: 2rem;
-            color: #CCFF00;
-            margin: 2rem 0 1rem;
-            font-weight: 700;
+            margin: 1rem 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+
+            /* White fill with black stroke - ccff00.com style */
+            color: white;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 2px black;
+            paint-order: stroke fill;
+            filter: drop-shadow(3px 3px 0 black);
         }
 
         .verdict-description {
-            color: #aaa;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
             line-height: 1.6;
         }
 
@@ -155,10 +247,11 @@
             transform: translateX(-50%);
             font-size: 0.85rem;
             white-space: nowrap;
+            color: #666;
         }
 
         .marker.true-cifeaux {
-            color: #CCFF00;
+            color: #000;
             font-weight: 700;
             font-size: 1rem;
         }
@@ -178,55 +271,88 @@
             top: 0;
         }
 
+        .boundary-note {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 0;
+            border: 2px solid #000;
+            text-align: left;
+        }
+
+        .boundary-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #000;
+        }
+
+        .boundary-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #000;
+            margin: 0.5rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .boundary-text {
+            color: #666;
+            line-height: 1.6;
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
+        }
+
         .stats {
-            margin: 3rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(204, 255, 0, 0.2);
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 0;
+            border: 1px solid #e0e0e0;
         }
 
         .stat-row {
             display: flex;
             justify-content: space-between;
-            margin: 1rem 0;
-            font-size: 1rem;
+            margin: 0.8rem 0;
+            font-size: 0.95rem;
         }
 
         .stat-label {
-            color: #aaa;
+            color: #666;
         }
 
         .stat-value {
-            color: #CCFF00;
+            color: #000;
             font-weight: 600;
         }
 
         .cta {
-            margin-top: 3rem;
-            padding: 2rem;
-            background: rgba(204, 255, 0, 0.1);
-            border-radius: 12px;
-            border: 2px solid #CCFF00;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f5f5f5;
+            border-radius: 0;
+            border: 2px solid #000;
         }
 
         .cta-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #CCFF00;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #000;
+            font-weight: 600;
         }
 
         .cta-text {
-            color: #aaa;
-            margin-bottom: 1.5rem;
+            color: #666;
+            margin-bottom: 1.2rem;
             line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         .cta-link {
-            color: #CCFF00;
+            color: #000;
             text-decoration: none;
             font-weight: 600;
-            border-bottom: 2px solid #CCFF00;
+            border-bottom: 2px solid #000;
             transition: opacity 0.2s;
         }
 
@@ -234,80 +360,246 @@
             opacity: 0.7;
         }
 
-        .start-screen, .test-screen {
+        .test-screen {
             display: none;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
         }
 
-        .start-screen.active, .test-screen.active {
-            display: block;
-        }
-
-        .start-button {
-            margin-top: 2rem;
+        .test-screen.active {
+            display: flex;
         }
 
         footer {
-            margin-top: 4rem;
-            color: #666;
+            margin-top: 2rem;
+            color: #999;
             font-size: 0.85rem;
         }
 
         footer a {
-            color: #CCFF00;
+            color: #666;
             text-decoration: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        footer a:hover {
+            color: #000;
+            border-bottom-color: #000;
+        }
+
+        /* Error Modal */
+        .error-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .error-modal.active {
+            display: flex;
+        }
+
+        .error-content {
+            max-width: 500px;
+            background: white;
+            padding: 2rem;
+            border-radius: 0;
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-title {
+            color: #000;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .error-text {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        /* About Modal */
+        .about-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(8px);
+        }
+
+        .about-modal.active {
+            display: flex;
+        }
+
+        .about-content {
+            max-width: 700px;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 0;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+            border: 3px solid #000;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .about-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+
+            /* White fill with black stroke - ccff00.com style */
+            color: white;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 2px black;
+            paint-order: stroke fill;
+            filter: drop-shadow(3px 3px 0 black);
+        }
+
+        .about-content h3 {
+            color: #000;
+            font-size: 1.2rem;
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+
+        .about-content p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .about-content a {
+            color: #000;
+            text-decoration: none;
+            border-bottom: 2px solid #000;
+        }
+
+        .about-content a:hover {
+            opacity: 0.7;
+        }
+
+        .close-btn {
+            background: white;
+            border: 2px solid #ccc;
+            color: #666;
+            padding: 0.8rem 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #CCFF00;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 999;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 600px) {
+            .ui-card, .results-card {
+                padding: 1.5rem;
+                margin: 10px;
+            }
+
             .button-group {
                 flex-direction: column;
+                gap: 0.8rem;
             }
 
             button {
                 width: 100%;
             }
 
-            .color-display {
-                height: 200px;
+            .about-content, .error-content {
+                padding: 1.5rem;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Start Screen -->
-        <div class="start-screen active">
-            <h1>Is My Cifeaux?</h1>
-            <p class="subtitle">
-                Test your ability to recognize the one true cifeaux (#CCFF00).<br>
-                Six adaptive questions. Personality-based verdict.
-            </p>
-            <div class="color-display" style="background: #CCFF00;"></div>
-            <p class="color-code">The One True Cifeaux: #CCFF00</p>
-            <button class="start-button" onclick="startTest()">Start Test</button>
-            <footer>
-                Inspired by <a href="https://ismy.blue/" target="_blank">ismy.blue</a> •
-                Part of the <a href="https://ccff00.com" target="_blank">CCFF00</a> brand
-            </footer>
-        </div>
+    <!-- Full screen color background -->
+    <div class="color-background" id="colorBackground"></div>
 
+    <div class="container">
         <!-- Test Screen -->
-        <div class="test-screen">
-            <h1>Is My Cifeaux?</h1>
-            <div class="color-display" id="colorDisplay"></div>
-            <p class="color-code" id="colorCode"></p>
-            <p class="question">Is this cifeaux?</p>
-            <div class="button-group">
-                <button onclick="answer(true)">Yes</button>
-                <button onclick="answer(false)">No</button>
+        <div class="test-screen active">
+            <div class="ui-card">
+                <h1>Is My Cifeaux?</h1>
+                <p class="question">Test your #CCFF00 perception</p>
+                <p class="subheader">is MY cifeaux, YOUR cifeaux?</p>
+                <div class="button-group">
+                    <button onclick="answer(true)">This is cifeaux</button>
+                    <button onclick="answer(false)">This is not cifeaux</button>
+                </div>
+                <div class="button-group">
+                    <button class="reset-btn" onclick="resetTest()">Reset</button>
+                </div>
+                <p class="progress" id="progress"></p>
             </div>
-            <p class="progress" id="progress"></p>
         </div>
 
         <!-- Results Screen -->
         <div class="results">
+            <div class="results-card">
             <h1>Is My Cifeaux?</h1>
-            <div class="verdict" id="verdict"></div>
+            <h2 class="results-header">Your results:</h2>
+            <h3 class="verdict" id="verdict"></h3>
             <p class="verdict-description" id="verdictDesc"></p>
+
+            <div class="boundary-note" id="boundaryNote">
+                <div class="boundary-title">Your Yellow-Green Boundary</div>
+                <div class="boundary-value" id="boundaryValue"></div>
+                <div class="boundary-text" id="boundaryText"></div>
+            </div>
 
             <div class="gradient-container">
                 <div class="gradient" id="gradient">
@@ -318,64 +610,92 @@
                 </div>
             </div>
 
-            <div class="stats">
-                <div class="stat-row">
-                    <span class="stat-label">Your range:</span>
-                    <span class="stat-value" id="rangeDisplay"></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Accepted shades:</span>
-                    <span class="stat-value" id="acceptedCount"></span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Perception bias:</span>
-                    <span class="stat-value" id="biasDisplay"></span>
-                </div>
+            <div class="button-group">
+                <button onclick="resetTest()">Reset</button>
+                <button class="about-btn" onclick="showAbout()">About</button>
             </div>
-
-            <div class="cta">
-                <div class="cta-title">Want to own your own colour?</div>
-                <p class="cta-text">
-                    This is what happens when you commit to a brand.
-                    Learn more about the CCFF00 project and how to build your own cultural brand.
-                </p>
-                <a href="https://ccff00.com" class="cta-link">Explore CCFF00 →</a>
-            </div>
-
-            <button onclick="location.reload()" style="margin-top: 2rem;">Test Again</button>
 
             <footer>
                 Inspired by <a href="https://ismy.blue/" target="_blank">ismy.blue</a> •
                 Part of the <a href="https://ccff00.com" target="_blank">CCFF00</a> brand
             </footer>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class="error-modal" id="errorModal">
+            <div class="error-content">
+                <div class="error-title">Hold up.</div>
+                <p class="error-text">
+                    The first color is always <strong>obviously</strong> yellow or green—like, you shouldn't even have to think about it.
+                    If you missed this one, either your screen is way off, you've got night mode on, or you're just messing with me.
+                    <br><br>
+                    Try again?
+                </p>
+                <button onclick="closeError()" class="close-btn" style="width: 100%;">Reset Test</button>
+            </div>
+        </div>
+
+        <!-- About Modal -->
+        <div class="about-modal" id="aboutModal">
+            <div class="about-content">
+                <h2>About This Test</h2>
+
+                <p>People name colors differently. Language, culture, and perception all play a role in where you draw the line between "yellow" and "green." This test measures your personal yellow-green boundary around <strong>#CCFF00</strong>—the one true cifeaux.</p>
+
+                <h3>Is This Real Science?</h3>
+                <p>Nope. This is for fun.</p>
+
+                <p>Real vision scientists use calibrated equipment. Designers use Pantone cards. Here, I'm using your phone or monitor, which is... not that. Your screen calibration, lighting, and night mode all mess with the results. But if you test on the same device in the same light, your results should be pretty consistent. Try it a few times and see.</p>
+
+                <p>Getting weird results doesn't mean your eyes are broken. It might mean you name colors differently than most people, or your setup is unusual. Either way, it's interesting.</p>
+
+                <h3>How It Works</h3>
+                <p>The test shows you colors sequentially in the yellow-green range. It's looking for the point where you stop calling things "cifeaux" and start rejecting them.</p>
+
+                <p>Behind the scenes, it's fitting a curve to your answers (like a logistic regression). It doesn't just do a binary search—it samples intelligently based on where you seem uncertain. Even if you feel like you're guessing in the middle, the math should handle it.</p>
+
+                <h3>Why This Exists</h3>
+                <p>Because I'm trying to <strong>own a color</strong>. Not just use it—<em>own</em> it. Culturally. Commercially. Creatively.</p>
+
+                <p>This is part of the <a href="https://ccff00.com" target="_blank">CCFF00 project</a>: proof that one person with AI, agency, and unreasonable commitment can claim a color the way brands claim red or blue.</p>
+
+                <p>If not me, who? If not now, when?</p>
+
+                <h3>Who Made This?</h3>
+                <p>Kade Blaze (<a href="https://ccff00.com" target="_blank">CCFF00</a>). Built with Claude Code. Inspired by <a href="https://ismy.blue" target="_blank">ismy.blue</a> by Patrick Mineault.</p>
+
+                <button onclick="closeAbout()" class="close-btn">Close</button>
+            </div>
         </div>
     </div>
 
     <script>
         // Adaptive colour pool - organized by spectrum position
+        // Wider range from yellow to green
         const colourPool = {
             veryYellow: [
-                { hex: '#FFFF00', name: 'Pure Yellow', value: 0 },
-                { hex: '#FFFF33', name: 'Canary Yellow', value: 1 },
-                { hex: '#FFFF66', name: 'Lemon Yellow', value: 2 }
+                { hex: '#EEFF00', name: 'Very Yellow', value: 0 },
+                { hex: '#E5FF00', name: 'Bright Yellow', value: 1 },
+                { hex: '#DDFF00', name: 'Electric Yellow', value: 2 }
             ],
             yellow: [
-                { hex: '#EEFF00', name: 'Bright Yellow', value: 3 },
-                { hex: '#EEFF33', name: 'Sunshine Yellow', value: 4 },
-                { hex: '#DDFF00', name: 'Electric Yellow', value: 5 }
+                { hex: '#D8FF00', name: 'Light Yellow', value: 3 },
+                { hex: '#D3FF00', name: 'Soft Yellow', value: 4 },
+                { hex: '#CEFF00', name: 'Yellow Edge', value: 5 }
             ],
             cifeaux: [
                 { hex: '#CCFF00', name: 'True Cifeaux', value: 6 }
             ],
             green: [
-                { hex: '#BBFF00', name: 'Yellow-Green', value: 7 },
-                { hex: '#AAFF33', name: 'Chartreuse', value: 8 },
-                { hex: '#AAFF00', name: 'Lime Green', value: 9 }
+                { hex: '#C5FF00', name: 'Yellow-Green', value: 7 },
+                { hex: '#BEFF00', name: 'Lime', value: 8 },
+                { hex: '#B7FF00', name: 'Chartreuse', value: 9 }
             ],
             veryGreen: [
-                { hex: '#99FF00', name: 'Spring Green', value: 10 },
-                { hex: '#88FF00', name: 'Bright Lime', value: 11 },
-                { hex: '#77FF00', name: 'Lawn Green', value: 12 }
+                { hex: '#B0FF00', name: 'Bright Lime', value: 10 },
+                { hex: '#A9FF00', name: 'Spring Green', value: 11 },
+                { hex: '#99FF00', name: 'Very Green', value: 12 }
             ]
         };
 
@@ -385,24 +705,42 @@
         let shownColours = [];
         let userBias = 0; // Tracks if user leans yellow (negative) or green (positive)
 
-        function startTest() {
-            // Track start event
-            gtag('event', 'test_start', {
-                'event_category': 'engagement'
-            });
+        function resetTest() {
+            currentQuestion = 0;
+            answers = [];
+            shownColours = [];
+            userBias = 0;
 
-            document.querySelector('.start-screen').classList.remove('active');
+            document.querySelector('.results').classList.remove('active');
             document.querySelector('.test-screen').classList.add('active');
 
             showColour();
+        }
+
+        function showAbout() {
+            document.getElementById('aboutModal').classList.add('active');
+        }
+
+        function closeAbout() {
+            document.getElementById('aboutModal').classList.remove('active');
+        }
+
+        function showError() {
+            document.getElementById('errorModal').classList.add('active');
+        }
+
+        function closeError() {
+            document.getElementById('errorModal').classList.remove('active');
+            resetTest();
         }
 
         function selectColourAdaptively() {
             let colour;
 
             if (currentQuestion === 0) {
-                // Start with true cifeaux
-                colour = colourPool.cifeaux[0];
+                // Start with obviously very yellow or very green (50/50 chance)
+                const pool = Math.random() > 0.5 ? colourPool.veryYellow : colourPool.veryGreen;
+                colour = pool[Math.floor(Math.random() * pool.length)];
             } else if (currentQuestion === 1) {
                 // Second question: go yellow
                 colour = colourPool.yellow[Math.floor(Math.random() * colourPool.yellow.length)];
@@ -449,8 +787,8 @@
             const colour = selectColourAdaptively();
             shownColours.push(colour.hex);
 
-            document.getElementById('colorDisplay').style.background = colour.hex;
-            document.getElementById('colorCode').textContent = colour.hex;
+            // Set background color
+            document.getElementById('colorBackground').style.background = colour.hex;
             document.getElementById('progress').textContent = `${currentQuestion + 1} of ${maxQuestions}`;
 
             // Store current colour for answer processing
@@ -459,6 +797,16 @@
 
         function answer(isCifeaux) {
             const colour = window.currentColour;
+
+            // Check if first question was answered incorrectly (obvious extremes)
+            if (currentQuestion === 0) {
+                const isExtreme = colour.value <= 2 || colour.value >= 10;
+                if (isExtreme && isCifeaux) {
+                    // They called an obvious extreme "cifeaux" - show error
+                    showError();
+                    return;
+                }
+            }
 
             // Track answer
             answers.push({
@@ -494,12 +842,58 @@
             }
         }
 
+        function createConfetti() {
+            const colors = ['#CCFF00', '#CCFF00', '#DDFF00', '#BBFF00', '#CCFF00']; // Mostly cifeaux
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 4000);
+                }, i * 30);
+            }
+        }
+
         function showResults() {
+            // Hide test, show results
             document.querySelector('.test-screen').classList.remove('active');
             document.querySelector('.results').classList.add('active');
 
-            // Calculate results
+            // Set background to average accepted color or cifeaux
             const yesAnswers = answers.filter(a => a.isCifeaux);
+            if (yesAnswers.length > 0) {
+                const avgValue = yesAnswers.reduce((sum, a) => sum + a.value, 0) / yesAnswers.length;
+                const allColours = [
+                    ...colourPool.veryYellow,
+                    ...colourPool.yellow,
+                    ...colourPool.cifeaux,
+                    ...colourPool.green,
+                    ...colourPool.veryGreen
+                ];
+                const closestColor = allColours.reduce((prev, curr) =>
+                    Math.abs(curr.value - avgValue) < Math.abs(prev.value - avgValue) ? curr : prev
+                );
+                document.getElementById('colorBackground').style.background = closestColor.hex;
+            } else {
+                document.getElementById('colorBackground').style.background = '#CCFF00';
+            }
+
+            // Trigger confetti
+            createConfetti();
+
+            // Calculate results (yesAnswers already calculated above)
             const acceptedCount = yesAnswers.length;
 
             // Find range boundaries (values, not indices)
@@ -549,25 +943,20 @@
                 rangeEl.style.width = Math.max(rangeWidth, 3) + '%';
             }
 
-            // Stats
-            const rangeColours = yesAnswers.map(a => a.colour).join(', ');
-            document.getElementById('rangeDisplay').textContent = rangeColours || 'None';
-            document.getElementById('acceptedCount').textContent = `${acceptedCount} of ${maxQuestions}`;
-
-            // Bias calculation
+            // Calculate boundary
             const avgValue = yesAnswers.length > 0
                 ? yesAnswers.reduce((sum, a) => sum + a.value, 0) / yesAnswers.length
                 : 6;
 
+            // Bias calculation (for database)
             let bias;
             if (avgValue < 5) {
-                bias = "More yellow ←";
+                bias = "More yellow";
             } else if (avgValue > 7) {
-                bias = "More green →";
+                bias = "More green";
             } else {
                 bias = "Perfectly balanced";
             }
-            document.getElementById('biasDisplay').textContent = bias;
 
             // Create gradient spanning full spectrum
             const allColours = [
@@ -584,6 +973,30 @@
             }).join(', ');
 
             document.getElementById('gradient').style.background = `linear-gradient(to right, ${gradientStops})`;
+
+            // Calculate and display boundary
+            const boundaryColor = allColours.reduce((prev, curr) =>
+                Math.abs(curr.value - avgValue) < Math.abs(prev.value - avgValue) ? curr : prev
+            );
+
+            document.getElementById('boundaryValue').textContent = boundaryColor.hex;
+
+            let boundaryText = '';
+            if (acceptedCount === 0) {
+                boundaryText = "You rejected everything. Either you're impossible to please or your screen is lying to you.";
+            } else if (acceptedCount === 1 && yesAnswers[0].hex === '#CCFF00') {
+                boundaryText = "Your boundary is exactly #CCFF00. Purist energy.";
+            } else if (avgValue < 6) {
+                const yellowness = Math.round(((6 - avgValue) / 6) * 100);
+                boundaryText = `You lean yellow. Your cifeaux threshold is ${yellowness}% more yellow than true #CCFF00.`;
+            } else if (avgValue > 6) {
+                const greenness = Math.round(((avgValue - 6) / 6) * 100);
+                boundaryText = `You lean green. Your cifeaux threshold is ${greenness}% more green than true #CCFF00.`;
+            } else {
+                boundaryText = "Your boundary is perfectly centered on #CCFF00. Rare.";
+            }
+
+            document.getElementById('boundaryText').textContent = boundaryText;
 
             // Save results to database
             saveResults({
@@ -619,6 +1032,16 @@
                 console.error('Error saving results:', error);
             });
         }
+
+        // Auto-start test on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Track start event
+            gtag('event', 'test_start', {
+                'event_category': 'engagement'
+            });
+
+            showColour();
+        });
     </script>
 </body>
 </html>
