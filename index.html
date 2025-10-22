@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is My Cifeaux? - Test Your #CCFF00 Color Perception</title>
+    <meta name="description" content="An interactive test to see if your yellow-green is close enough to the one true cifeaux (#CCFF00). Compare your color perception with others.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+
+        .color-display {
+            width: 100%;
+            height: 300px;
+            margin: 2rem 0;
+            border-radius: 12px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 20px 60px rgba(204, 255, 0, 0.3);
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin: 2rem 0 1.5rem;
+            font-weight: 500;
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: #CCFF00;
+            margin: 1rem 0 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        button {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: 2px solid #CCFF00;
+            background: transparent;
+            color: #CCFF00;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        button:hover {
+            background: #CCFF00;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .progress {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* Results Page */
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .verdict {
+            font-size: 2rem;
+            color: #CCFF00;
+            margin: 2rem 0 1rem;
+            font-weight: 700;
+        }
+
+        .verdict-description {
+            color: #aaa;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .gradient-container {
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .gradient {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            position: relative;
+            margin: 1rem 0;
+        }
+
+        .marker {
+            position: absolute;
+            top: -30px;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .marker.true-cifeaux {
+            color: #CCFF00;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .marker::after {
+            content: '▼';
+            display: block;
+            text-align: center;
+        }
+
+        .range-indicator {
+            position: absolute;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            border-radius: 4px;
+            top: 0;
+        }
+
+        .stats {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(204, 255, 0, 0.2);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            font-size: 1rem;
+        }
+
+        .stat-label {
+            color: #aaa;
+        }
+
+        .stat-value {
+            color: #CCFF00;
+            font-weight: 600;
+        }
+
+        .cta {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(204, 255, 0, 0.1);
+            border-radius: 12px;
+            border: 2px solid #CCFF00;
+        }
+
+        .cta-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #CCFF00;
+        }
+
+        .cta-text {
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-link {
+            color: #CCFF00;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid #CCFF00;
+            transition: opacity 0.2s;
+        }
+
+        .cta-link:hover {
+            opacity: 0.7;
+        }
+
+        .start-screen {
+            display: block;
+        }
+
+        .test-screen {
+            display: none;
+        }
+
+        .start-screen.hidden,
+        .test-screen.hidden {
+            display: none;
+        }
+
+        .start-button {
+            margin-top: 2rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #CCFF00;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .color-display {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div class="start-screen">
+            <h1>Is My Cifeaux?</h1>
+            <p class="subtitle">
+                Test your ability to recognize the one true cifeaux (#CCFF00).<br>
+                You'll see six shades. For each, answer: Is this cifeaux?
+            </p>
+            <div class="color-display" style="background: #CCFF00;"></div>
+            <p class="color-code">The One True Cifeaux: #CCFF00</p>
+            <button class="start-button" onclick="startTest()">Start Test</button>
+            <footer>
+                Inspired by <a href="https://ismy.blue/" target="_blank">ismy.blue</a> •
+                Part of the <a href="https://ccff00.com" target="_blank">CCFF00</a> brand
+            </footer>
+        </div>
+
+        <!-- Test Screen -->
+        <div class="test-screen hidden">
+            <h1>Is My Cifeaux?</h1>
+            <div class="color-display" id="colorDisplay"></div>
+            <p class="color-code" id="colorCode"></p>
+            <p class="question">Is this cifeaux?</p>
+            <div class="button-group">
+                <button onclick="answer(true)">Yes</button>
+                <button onclick="answer(false)">No</button>
+            </div>
+            <p class="progress" id="progress"></p>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results">
+            <h1>Is My Cifeaux?</h1>
+            <div class="verdict" id="verdict"></div>
+            <p class="verdict-description" id="verdictDesc"></p>
+
+            <div class="gradient-container">
+                <div class="gradient" id="gradient">
+                    <div class="marker true-cifeaux" style="left: 50%;">
+                        True Cifeaux<br>#CCFF00
+                    </div>
+                    <div class="range-indicator" id="userRange"></div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-row">
+                    <span class="stat-label">Your range:</span>
+                    <span class="stat-value" id="rangeDisplay"></span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Accepted shades:</span>
+                    <span class="stat-value" id="acceptedCount"></span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Perception bias:</span>
+                    <span class="stat-value" id="biasDisplay"></span>
+                </div>
+            </div>
+
+            <div class="cta">
+                <div class="cta-title">Want to own your own color?</div>
+                <p class="cta-text">
+                    This is what happens when you commit to a brand.
+                    Learn more about the CCFF00 project and how to build your own cultural brand.
+                </p>
+                <a href="https://ccff00.com" class="cta-link">Explore CCFF00 →</a>
+            </div>
+
+            <button onclick="location.reload()" style="margin-top: 2rem;">Test Again</button>
+
+            <footer>
+                Inspired by <a href="https://ismy.blue/" target="_blank">ismy.blue</a> •
+                Part of the <a href="https://ccff00.com" target="_blank">CCFF00</a> brand
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Test colors: yellow to green spectrum around #CCFF00
+        const testColors = [
+            { hex: '#FFFF00', name: 'Pure Yellow' },
+            { hex: '#EEFF00', name: 'Bright Yellow' },
+            { hex: '#DDFF00', name: 'Electric Yellow' },
+            { hex: '#CCFF00', name: 'True Cifeaux' },
+            { hex: '#BBFF00', name: 'Yellow-Green' },
+            { hex: '#AAFF00', name: 'Lime Green' },
+        ];
+
+        let currentIndex = 0;
+        let answers = [];
+
+        function startTest() {
+            document.querySelector('.start-screen').classList.add('hidden');
+            document.querySelector('.test-screen').classList.remove('hidden');
+            showColor();
+        }
+
+        function showColor() {
+            const color = testColors[currentIndex];
+            document.getElementById('colorDisplay').style.background = color.hex;
+            document.getElementById('colorCode').textContent = color.hex;
+            document.getElementById('progress').textContent = `${currentIndex + 1} of ${testColors.length}`;
+        }
+
+        function answer(isCifeaux) {
+            answers.push({
+                color: testColors[currentIndex].hex,
+                isCifeaux: isCifeaux,
+                index: currentIndex
+            });
+
+            currentIndex++;
+
+            if (currentIndex < testColors.length) {
+                showColor();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.querySelector('.test-screen').classList.add('hidden');
+            document.querySelector('.results').classList.add('active');
+
+            // Calculate range
+            const yesAnswers = answers.filter(a => a.isCifeaux);
+            const acceptedCount = yesAnswers.length;
+
+            // Find range boundaries
+            let minIndex = yesAnswers.length > 0 ? Math.min(...yesAnswers.map(a => a.index)) : -1;
+            let maxIndex = yesAnswers.length > 0 ? Math.max(...yesAnswers.map(a => a.index)) : -1;
+
+            // Determine verdict
+            let verdict, description;
+
+            if (acceptedCount === 0) {
+                verdict = "The Skeptic";
+                description = "Not a single shade passed your test. You're either a purist with impossible standards or you're trolling. Either way, respect the commitment.";
+            } else if (acceptedCount === 1 && answers[3].isCifeaux) {
+                verdict = "The Purist";
+                description = "You accept only #CCFF00 and nothing else. You understand that cifeaux is not a range—it's a religion.";
+            } else if (acceptedCount <= 2) {
+                verdict = "The Connoisseur";
+                description = "You have refined taste and strict boundaries. You know cifeaux when you see it, and you're not easily fooled.";
+            } else if (acceptedCount <= 4) {
+                verdict = "The Pragmatist";
+                description = "You understand that cifeaux is a vibe, not just a hex code. There's room for interpretation, but you still have standards.";
+            } else if (acceptedCount <= 5) {
+                verdict = "The Expansionist";
+                description = "Your cifeaux territory is broad. You see the family resemblance across the yellow-green spectrum. Bold.";
+            } else {
+                verdict = "The Visionary";
+                description = "Every shade is cifeaux if you believe hard enough. You're either colorblind or operating on a higher plane of consciousness.";
+            }
+
+            document.getElementById('verdict').textContent = verdict;
+            document.getElementById('verdictDesc').textContent = description;
+
+            // Display range
+            if (minIndex >= 0 && maxIndex >= 0) {
+                const rangePercent = ((maxIndex - minIndex) / (testColors.length - 1)) * 100;
+                const leftPercent = (minIndex / (testColors.length - 1)) * 100;
+
+                const rangeEl = document.getElementById('userRange');
+                rangeEl.style.left = leftPercent + '%';
+                rangeEl.style.width = Math.max(rangePercent, 3) + '%';
+            }
+
+            // Stats
+            const rangeColors = yesAnswers.map(a => a.color).join(', ');
+            document.getElementById('rangeDisplay').textContent = rangeColors || 'None';
+            document.getElementById('acceptedCount').textContent = `${acceptedCount} of ${testColors.length}`;
+
+            // Bias calculation
+            const trueCifeauxIndex = 3;
+            const avgIndex = yesAnswers.length > 0
+                ? yesAnswers.reduce((sum, a) => sum + a.index, 0) / yesAnswers.length
+                : trueCifeauxIndex;
+
+            let bias;
+            if (avgIndex < trueCifeauxIndex - 0.5) {
+                bias = "More yellow ←";
+            } else if (avgIndex > trueCifeauxIndex + 0.5) {
+                bias = "More green →";
+            } else {
+                bias = "Perfectly balanced";
+            }
+            document.getElementById('biasDisplay').textContent = bias;
+
+            // Create gradient
+            const gradientStops = testColors.map((c, i) => {
+                const position = (i / (testColors.length - 1)) * 100;
+                return `${c.hex} ${position}%`;
+            }).join(', ');
+
+            document.getElementById('gradient').style.background = `linear-gradient(to right, ${gradientStops})`;
+        }
+    </script>
+</body>
+</html>
