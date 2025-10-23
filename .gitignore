@@ -6,6 +6,34 @@ config.php
 .env.local
 .env.production
 
+# Internal Documentation (keep in vault, not public repo)
+*-SUMMARY.md
+*-LOG.md
+*-STATS.md
+*-DEPLOYMENT.md
+*-VERIFICATION.md
+*-STATE.md
+*-STEPS.md
+*-FINAL.md
+OUTREACH.md
+SESSION*.md
+CPANEL*.md
+DATABASE*.md
+CURRENT*.md
+NEXT*.md
+WORDPRESS*.md
+SOCIAL*.md
+
+# Idea/Planning docs (vault-only)
+01-*.md
+02-*.md
+03-*.md
+04-*.md
+*-idea-*.md
+*-draft*.md
+*-content*.md
+*-optimization*.md
+
 # IDE
 .vscode/
 .idea/
